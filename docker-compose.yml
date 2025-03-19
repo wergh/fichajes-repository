@@ -1,0 +1,76 @@
+services:
+  # Frontend Vue.js
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vue_frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    environment:
+      - VUE_APP_API_URL=http://localhost:8000/api
+
+  # Backend Symfony
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: symfony_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www/html
+      - /var/www/html/vendor
+    depends_on:
+      - database
+    networks:
+      - app-network
+    environment:
+      - APP_ENV=dev
+      - DATABASE_URL=mysql://user:password@database:3306/fichajes_bd?serverVersion=8.0
+
+  # MySQL Database
+  database:
+    image: mysql:8.0
+    container_name: mysql_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: fichajes_bd
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      PMA_USER: user
+      PMA_PASSWORD: password
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

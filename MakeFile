@@ -1,0 +1,76 @@
+# Makefile para proyecto Vue.js + Symfony + MySQL en Docker
+.PHONY: help build up down clean restart logs ps test-frontend test-backend bash-frontend bash-backend db-migrate db-reset
+
+# Variables
+DOCKER_COMPOSE = docker-compose
+
+# Mensaje de ayuda
+help:
+	@echo "Comandos disponibles:"
+	@echo "  make build           - Construir todos los contenedores"
+	@echo "  make up              - Levantar todos los contenedores"
+	@echo "  make down            - Detener todos los contenedores"
+	@echo "  make clean           - Detener todos los contenedores y eliminar volúmenes"
+	@echo "  make restart         - Reiniciar todos los contenedores"
+	@echo "  make logs            - Ver los logs de todos los contenedores"
+	@echo "  make ps              - Ver el estado de todos los contenedores"
+	@echo "  make test-frontend   - Ejecutar tests del frontend"
+	@echo "  make test-backend    - Ejecutar tests del backend"
+	@echo "  make bash-frontend   - Abrir una terminal bash en el contenedor del frontend"
+	@echo "  make bash-backend    - Abrir una terminal bash en el contenedor del backend"
+	@echo "  make db-migrate      - Ejecutar migraciones de la base de datos"
+	@echo "  make db-reset        - Eliminar la base de datos y recrearla"
+
+# Construir todos los contenedores
+build:
+	$(DOCKER_COMPOSE) build --no-cache
+
+# Levantar todos los contenedores
+up:
+	$(DOCKER_COMPOSE) up -d
+
+# Detener todos los contenedores
+down:
+	$(DOCKER_COMPOSE) down
+
+# Detener todos los contenedores y eliminar volúmenes
+clean:
+	$(DOCKER_COMPOSE) down -v
+
+# Reiniciar todos los contenedores
+restart:
+	$(DOCKER_COMPOSE) restart
+
+# Ver los logs de todos los contenedores
+logs:
+	$(DOCKER_COMPOSE) logs -f
+
+# Ver el estado de todos los contenedores
+ps:
+	$(DOCKER_COMPOSE) ps
+
+# Ejecutar tests del frontend
+test-frontend:
+	$(DOCKER_COMPOSE) exec frontend npm run test
+
+# Ejecutar tests del backend
+test-backend:
+	$(DOCKER_COMPOSE) exec backend php bin/phpunit
+
+# Abrir una terminal bash en el contenedor del frontend
+bash-frontend:
+	$(DOCKER_COMPOSE) exec frontend sh
+
+# Abrir una terminal bash en el contenedor del backend
+bash-backend:
+	$(DOCKER_COMPOSE) exec backend bash
+
+# Ejecutar migraciones de la base de datos
+db-migrate:
+	$(DOCKER_COMPOSE) exec backend php bin/console doctrine:migrations:migrate --no-interaction
+
+# Eliminar la base de datos y recrearla
+db-reset:
+	$(DOCKER_COMPOSE) exec backend php bin/console doctrine:database:drop --force --if-exists
+	$(DOCKER_COMPOSE) exec backend php bin/console doctrine:database:create
+	$(DOCKER_COMPOSE) exec backend php bin/console doctrine:migrations:migrate --no-interaction
