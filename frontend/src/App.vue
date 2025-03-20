@@ -116,6 +116,7 @@ async function loadUserData(userId: string) {
     const openEntry = workEntries.value.find(entry => !entry.endDate);
     isWorking.value = !!openEntry;
     if (isWorking.value) {
+      stopTimer();
       startTimer(timerSeconds.value);
     } else {
       stopTimer();
@@ -170,21 +171,22 @@ async function handleAction(action) {
 
 async function handleCreateUser(name: string) {
 
+  mainLoading.value = true
+  isCreateModalOpen.value = false;
   try {
     const response: APIResponses['users']['create'] = await userService.createUser({"name": name });
 
     if (response) {
       users.value.push(response.data);
       selectedUserId.value = response.data.id;
-      isCreateModalOpen.value = false;
       loadUserData(response.data.id);
       toast.success("Usuario creado correctamente");
     }
   } catch (error) {
     console.error('Error al detener el Work Entry:', error);
-    toast.success("Error al crear el usuario");
+    toast.error("Error al crear el usuario");
   }
-
+  mainLoading.value = false
 }
 
 async function handleDeleteEntry(entry: WorkEntry) {

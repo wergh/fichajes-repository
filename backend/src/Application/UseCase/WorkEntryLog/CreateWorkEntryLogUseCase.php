@@ -13,7 +13,7 @@ use App\Domain\WorkEntry\Entity\WorkEntryLog;
 use App\Domain\WorkEntry\Exception\UnauthorizedAccessToWorkEntry;
 use App\Domain\WorkEntry\Repository\WorkEntryLogWriteRepositoryInterface;
 
-readonly class CreateWorkEntryLogUseCase
+final readonly class CreateWorkEntryLogUseCase
 {
     public function __construct(
         private WorkEntryLogWriteRepositoryInterface $workEntryLogWriteRepository,

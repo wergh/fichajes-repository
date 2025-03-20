@@ -25,9 +25,9 @@ help:
 build:
 	$(DOCKER_COMPOSE) build --no-cache
 
-# Levantar todos los contenedores
+# Construir y levantar todos los contenedores
 up:
-	$(DOCKER_COMPOSE) up -d
+	$(DOCKER_COMPOSE) up -d --build
 
 # Detener todos los contenedores
 down:
@@ -51,7 +51,7 @@ ps:
 
 # Ejecutar tests del frontend
 test-frontend:
-	$(DOCKER_COMPOSE) exec frontend npm run test
+	$(DOCKER_COMPOSE) exec frontend npm run test:unit
 
 # Ejecutar tests del backend
 test-backend:
