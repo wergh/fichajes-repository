@@ -11,7 +11,6 @@ abstract class UuidValueObject
 
     protected function __construct(string $value)
     {
-        // Aquí podrías agregar validación para asegurar que es un UUID válido
         $this->value = $value;
     }
 
