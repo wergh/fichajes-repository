@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Infrastructure\Api\Controller\WorkEntry;
 
 use App\Application\Mapper\WorkEntry\WorkEntryDtoMapper;
@@ -16,10 +15,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Controller for handling requests to close a work entry.
+ */
 #[AsController]
 class CloseWorkEntryController extends AbstractController
 {
-
+    /**
+     * Constructor for CloseWorkEntryController.
+     * 
+     * @param CloseWorkEntryUseCase $closeWorkEntryUseCase Use case for closing a work entry.
+     * @param WorkEntryDtoMapper $workEntryDtoMapper Mapper for converting WorkEntry entities to WorkEntryDto.
+     */
     public function __construct(
         private readonly CloseWorkEntryUseCase $closeWorkEntryUseCase,
         private readonly WorkEntryDtoMapper    $workEntryDtoMapper
@@ -27,6 +34,12 @@ class CloseWorkEntryController extends AbstractController
     {
     }
 
+    /**
+     * Handle the request to close a work entry.
+     * 
+     * @param string $userId The ID of the user whose work entry is to be closed.
+     * @return JsonResponse The JSON response.
+     */
     #[Route('/work-entry/close/{userId}', methods: ['GET'])]
     public function _invoke(string $userId): JsonResponse
     {

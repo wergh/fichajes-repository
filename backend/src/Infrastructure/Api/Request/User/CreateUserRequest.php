@@ -6,9 +6,11 @@ namespace App\Infrastructure\Api\Request\User;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Request class for creating a user.
+ */
 class CreateUserRequest
 {
-
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     private string $name;
@@ -27,5 +29,4 @@ class CreateUserRequest
     {
         $this->name = $name;
     }
-
 }

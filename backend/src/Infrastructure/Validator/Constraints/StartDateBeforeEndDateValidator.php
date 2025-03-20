@@ -10,8 +10,19 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use DateTimeImmutable;
 
+/**
+ * Validator for the StartDateBeforeEndDate constraint.
+ */
 class StartDateBeforeEndDateValidator extends ConstraintValidator
 {
+    /**
+     * Validate the given value against the StartDateBeforeEndDate constraint.
+     * 
+     * @param mixed $value The value to validate.
+     * @param Constraint $constraint The constraint for the validation.
+     * @throws UnexpectedTypeException If the constraint is not of type StartDateBeforeEndDate.
+     * @throws UnexpectedValueException If the start or end date is not a DateTimeImmutable instance.
+     */
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof StartDateBeforeEndDate) {
@@ -33,7 +44,7 @@ class StartDateBeforeEndDateValidator extends ConstraintValidator
             throw new UnexpectedValueException($endDate, DateTimeImmutable::class);
         }
 
-        // Comparar las fechas
+        // Compare the dates
         if ($startDate >= $endDate) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ startDate }}', $startDate->format('Y-m-d H:i:s'))

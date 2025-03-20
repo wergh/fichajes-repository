@@ -6,6 +6,9 @@ use App\Domain\User\ValueObject\UserId;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
+/**
+ * Custom Doctrine type for handling UserId value objects.
+ */
 class UserIdType extends Type
 {
     public const NAME = 'user_id';

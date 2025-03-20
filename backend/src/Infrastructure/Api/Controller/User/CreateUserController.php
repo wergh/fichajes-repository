@@ -18,10 +18,20 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Controller for handling user creation requests.
+ */
 #[AsController]
 class CreateUserController extends AbstractController
 {
-
+    /**
+     * Constructor for CreateUserController.
+     * 
+     * @param UserDtoMapper $userDtoMapper Mapper for converting User entities to UserDto.
+     * @param CreateUserUseCase $createUserUseCase Use case for creating a new user.
+     * @param SerializerInterface $serializer Serializer for request data.
+     * @param ValidatorInterface $validator Validator for request data.
+     */
     public function __construct(
         private readonly UserDtoMapper $userDtoMapper,
         private readonly CreateUserUseCase $createUserUseCase,
@@ -29,6 +39,12 @@ class CreateUserController extends AbstractController
         private readonly ValidatorInterface $validator,
     ) {}
 
+    /**
+     * Handle the user creation request.
+     * 
+     * @param Request $request The HTTP request.
+     * @return JsonResponse The JSON response.
+     */
     #[Route('/users', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
@@ -54,5 +70,4 @@ class CreateUserController extends AbstractController
 
         return new JsonResponse(['message' => 'User created successfully', 'data' => $userDTO], Response::HTTP_CREATED);
     }
-
 }

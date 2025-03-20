@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Infrastructure\Api\Request\WorkEntry;
 
 use App\Infrastructure\Validator\Constraints\DateTimeImmutableType;
@@ -10,9 +9,11 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Request class for updating a work entry.
+ */
 class UpdateWorkEntryRequest
 {
-
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     private string $userId;
@@ -63,5 +64,4 @@ class UpdateWorkEntryRequest
     {
         return DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, $this->endDate) ?: null;
     }
-
 }

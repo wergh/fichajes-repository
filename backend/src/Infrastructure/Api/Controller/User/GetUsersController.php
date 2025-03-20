@@ -13,15 +13,28 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * Controller for handling requests to retrieve all users.
+ */
 #[AsController]
 class GetUsersController extends AbstractController
 {
-
+    /**
+     * Constructor for GetUsersController.
+     * 
+     * @param GetUsersUseCase $getUsersUseCase Use case for retrieving all users.
+     * @param UserListDtoMapper $userDTOMapper Mapper for converting User entities to UserListDto.
+     */
     public function __construct(
         private readonly GetUsersUseCase $getUsersUseCase,
         private readonly UserListDtoMapper $userDTOMapper,
     ) {}
 
+    /**
+     * Handle the request to retrieve all users.
+     * 
+     * @return JsonResponse The JSON response.
+     */
     #[Route('/users', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
@@ -33,6 +46,5 @@ class GetUsersController extends AbstractController
         }
 
         return new JsonResponse(['message' => 'Users retrieved successfully', 'data' => $usersDTO], Response::HTTP_CREATED);
-
     }
 }

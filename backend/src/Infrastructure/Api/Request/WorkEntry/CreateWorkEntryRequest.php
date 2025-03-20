@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-
 namespace App\Infrastructure\Api\Request\WorkEntry;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Request class for creating a work entry.
+ */
 class CreateWorkEntryRequest
 {
-
     #[Assert\NotBlank]
     #[Assert\Type('string')]
     private string $userId;

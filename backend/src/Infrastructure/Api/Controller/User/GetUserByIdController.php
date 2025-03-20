@@ -15,16 +15,31 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * Controller for handling requests to retrieve a user by ID.
+ */
 #[AsController]
 class GetUserByIdController extends AbstractController
 {
-
+    /**
+     * Constructor for GetUserByIdController.
+     * 
+     * @param GetUserByIdUseCase $getUserByIdUseCase Use case for retrieving user by ID.
+     * @param UserDtoMapper $userDTOMapper Mapper for converting User entities to UserDto.
+     * @param GetTodayWorkHoursForUserUseCase $getTodayWorkHoursForUserUseCase Use case for calculating today's work hours for a user.
+     */
     public function __construct(
         private readonly GetUserByIdUseCase $getUserByIdUseCase,
         private readonly UserDtoMapper $userDTOMapper,
         private readonly GetTodayWorkHoursForUserUseCase $getTodayWorkHoursForUserUseCase
     ) {}
 
+    /**
+     * Handle the request to retrieve a user by ID.
+     * 
+     * @param string $id The ID of the user to retrieve.
+     * @return JsonResponse The JSON response.
+     */
     #[Route('/user/{id}', methods: ['GET'])]
     public function __invoke(string $id): JsonResponse
     {
@@ -37,7 +52,6 @@ class GetUserByIdController extends AbstractController
         $totalTime = $this->getTodayWorkHoursForUserUseCase->execute($user);
 
         $userDTO = $this->userDTOMapper->toDTO($user, $totalTime);
-
 
         return new JsonResponse(
             ['message' => 'User retrieved successfully', 'data' => $userDTO],

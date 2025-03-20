@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Infrastructure\Api\Controller\WorkEntry;
 
 use App\Application\Command\WorkEntry\UpdateWorkEntryCommand;
@@ -25,24 +24,39 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Controller for handling requests to update a work entry.
+ */
 #[AsController]
 class UpdateWorkEntryController extends AbstractController
 {
-
+    /**
+     * Constructor for UpdateWorkEntryController.
+     * 
+     * @param UpdateWorkEntryUseCase $updateWorkEntryUseCase Use case for updating a work entry.
+     * @param SerializerInterface $serializer Serializer for request data.
+     * @param ValidatorInterface $validator Validator for request data.
+     * @param WorkEntryDtoMapper $workEntryDtoMapper Mapper for converting WorkEntry entities to WorkEntryDto.
+     */
     public function __construct(
         private readonly UpdateWorkEntryUseCase $updateWorkEntryUseCase,
         private readonly SerializerInterface    $serializer,
         private readonly ValidatorInterface     $validator,
         private readonly WorkEntryDtoMapper     $workEntryDtoMapper
-
     )
     {
     }
 
+    /**
+     * Handle the request to update a work entry.
+     * 
+     * @param string $workEntryId The ID of the work entry to update.
+     * @param Request $request The HTTP request.
+     * @return JsonResponse The JSON response.
+     */
     #[Route('/work-entry/{workEntryId}', methods: ['PATCH'])]
     public function _invoke(string $workEntryId, Request $request): JsonResponse
     {
-
         $updateWorkEntryRequest = $this->serializer->deserialize(
             $request->getContent(),
             UpdateWorkEntryRequest::class,

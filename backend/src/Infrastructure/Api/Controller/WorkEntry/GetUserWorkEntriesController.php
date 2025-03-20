@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace App\Infrastructure\Api\Controller\WorkEntry;
 
 use App\Application\Mapper\WorkEntry\WorkEntryDtoMapper;
@@ -15,10 +14,18 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * Controller for handling requests to retrieve work entries for a user.
+ */
 #[AsController]
 class GetUserWorkEntriesController extends AbstractController
 {
-
+    /**
+     * Constructor for GetUserWorkEntriesController.
+     * 
+     * @param GetUserWorkEntriesUseCase $getUserWorkEntriesUseCase Use case for retrieving work entries for a user.
+     * @param WorkEntryDtoMapper $workEntryDtoMapper Mapper for converting WorkEntry entities to WorkEntryDto.
+     */
     public function __construct(
         private readonly GetUserWorkEntriesUseCase $getUserWorkEntriesUseCase,
         private readonly WorkEntryDtoMapper $workEntryDtoMapper,
@@ -27,8 +34,10 @@ class GetUserWorkEntriesController extends AbstractController
     }
 
     /**
-     * @param string $userId
-     * @return JsonResponse
+     * Handle the request to retrieve work entries for a user.
+     * 
+     * @param string $userId The ID of the user whose work entries are to be retrieved.
+     * @return JsonResponse The JSON response.
      */
     #[Route('/work-entries/{userId}', methods: ['GET'])]
     public function __invoke(string $userId): JsonResponse
@@ -46,6 +55,5 @@ class GetUserWorkEntriesController extends AbstractController
             ['message' => 'WorkEntries retrieved successfully', 'data' => $workEntriesDTO],
             Response::HTTP_OK,
         );
-
     }
 }

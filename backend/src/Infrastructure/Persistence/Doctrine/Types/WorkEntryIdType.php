@@ -6,6 +6,9 @@ use App\Domain\WorkEntry\ValueObject\WorkEntryId;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
+/**
+ * Custom Doctrine type for handling WorkEntryId value objects.
+ */
 class WorkEntryIdType extends Type
 {
     public const NAME = 'work_entry_id';

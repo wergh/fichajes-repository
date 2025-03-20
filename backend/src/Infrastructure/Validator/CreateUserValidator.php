@@ -8,11 +8,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
+/**
+ * Validator for creating a user.
+ */
 class CreateUserValidator implements CreateUserValidatorInterface
 {
-
+    /**
+     * Constructor for CreateUserValidator.
+     * 
+     * @param ValidatorInterface $validator The validator interface for validating constraints.
+     */
     public function __construct(private readonly ValidatorInterface $validator) {}
 
+    /**
+     * Validate the CreateUserCommand.
+     * 
+     * @param CreateUserCommand $command The command to validate.
+     * @throws ValidationFailedException If validation fails.
+     */
     public function validate(CreateUserCommand $command): void
     {
         $constraints = new Assert\Collection([
