@@ -22,10 +22,19 @@ Este proyecto implementa una arquitectura **hexagonal** con **DDD** y sigue los 
 
 ### Requisitos
 
+- Git
 - Docker y Docker Compose
-- Make (opcional, pero recomendado)
+- Make (opcional)
 
 Para entornos Windows es necesario tener instalado el Docker Desktop. Una vez se tenga instalado e iniciado correctamente, con los siguientes comandos se puede desplegar el proyecto.
+
+### Descargar el repositorio
+
+Puede descargarse el repositorio con el siguiente comando
+
+```sh
+git clone git@github.com:wergh/fichajes-repository.git
+```
 
 ### Construir y levantar el entorno
 
